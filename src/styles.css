@@ -1,0 +1,233 @@
+/* ===== Giao diện dùng chung cho toàn hệ thống ===== */
+
+/* --- Drawer: tiêu đề gọn, nội dung thoáng --- */
+.app-drawer .ant-drawer-header {
+  border-bottom: 1px solid #eef2f7;
+  padding: 16px 24px;
+}
+
+.app-drawer .ant-drawer-title {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.app-drawer .ant-drawer-body {
+  padding: 20px 24px 28px;
+}
+
+/* --- Card: bỏ viền dày, dùng đổ bóng nhẹ --- */
+.app-card.ant-card {
+  border: 1px solid #eef2f7;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  border-radius: 12px;
+}
+
+.app-card .ant-card-head {
+  border-bottom: 1px solid #eef2f7;
+  padding: 0 20px;
+  min-height: 60px;
+}
+
+.app-card .ant-card-head-title {
+  padding: 16px 0;
+}
+
+.app-card .ant-card-body {
+  padding: 16px 20px 20px;
+}
+
+/* --- Tiêu đề nhóm trong form --- */
+.form-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.form-section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #e2e8f0, rgba(226, 232, 240, 0));
+}
+
+/* --- Lỗi của Form.List --- */
+.form-list-error {
+  color: #ff4d4f;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+/* --- Block trình độ học vấn --- */
+.degree-card {
+  border: 1px solid #e6ebf2;
+  border-radius: 10px;
+  background: #fbfcfe;
+  padding: 14px 16px 0;
+  margin-bottom: 12px;
+}
+
+.degree-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.degree-card-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #1e293b;
+  background: #eef2ff;
+  border: 1px solid #dbe3ff;
+  border-radius: 999px;
+  padding: 2px 12px;
+  white-space: nowrap;
+}
+
+.degree-card-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* --- Dòng nhãn + switch --- */
+.inline-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* --- Avatar --- */
+.avatar-panel {
+  position: sticky;
+  top: 0;
+  padding: 8px 0 24px;
+}
+
+@media (max-width: 992px) {
+  .avatar-panel {
+    position: static;
+    padding: 0 0 16px;
+  }
+}
+
+.avatar-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar-dropzone {
+  position: relative;
+  cursor: pointer;
+  border-radius: 50%;
+  display: inline-flex;
+  transition: transform 0.15s ease;
+}
+
+.avatar-dropzone:hover {
+  transform: scale(1.02);
+}
+
+.avatar-hint {
+  font-size: 12px;
+  color: #94a3b8;
+  text-align: center;
+  line-height: 1.5;
+}
+
+@media (max-width: 992px) {
+  /* Mobile: ảnh và nút nằm cạnh nhau để tiết kiệm chiều cao */
+  .avatar-upload {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .avatar-upload > div:last-child {
+    flex: 1;
+    min-width: 140px;
+  }
+}
+
+/* --- Bảng: cột học vấn --- */
+.degree-list-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 0;
+}
+
+.degree-list-item + .degree-list-item {
+  border-top: 1px dashed #eef2f7;
+  margin-top: 4px;
+  padding-top: 8px;
+}
+
+/* --- Bảng: cột cố định (Ảnh / Thao tác) phải nền đồng nhất với dòng ---
+   Ant Design đặt rule nền cho `.ant-table-cell-fix` (nền trắng) SAU rule
+   `row-hover`, nên các ô cột fixed luôn đè nền trắng lên dòng đang rê chuột,
+   tạo cảm giác bị lồng giao diện. Phải nhắm đúng class row-hover. */
+.app-table .ant-table-tbody > tr > td.ant-table-cell-fix-start,
+.app-table .ant-table-tbody > tr > td.ant-table-cell-fix-end {
+  background: #ffffff;
+}
+
+.app-table .ant-table-tbody > tr > td.ant-table-cell-row-hover.ant-table-cell-fix-start,
+.app-table .ant-table-tbody > tr > td.ant-table-cell-row-hover.ant-table-cell-fix-end {
+  background: var(--ant-table-row-hover-bg, #f6f9ff);
+}
+
+.app-table .ant-table-tbody > tr.ant-table-row-selected > td.ant-table-cell-fix-start,
+.app-table .ant-table-tbody > tr.ant-table-row-selected > td.ant-table-cell-fix-end {
+  background: var(--ant-table-row-selected-bg, #e6f4ff);
+}
+
+/* --- Responsive: thu gọn khoảng cách trên màn hình nhỏ --- */
+@media (max-width: 768px) {
+  .app-drawer .ant-drawer-body {
+    padding: 16px 16px 24px;
+  }
+
+  .app-card .ant-card-body {
+    padding: 12px 12px 16px;
+  }
+
+  .app-card .ant-card-head {
+    padding: 0 12px;
+  }
+
+  .form-section-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .degree-card {
+    padding: 12px 12px 0;
+  }
+}
+
+/* Nhãn nút hành động: hiện trên desktop, ẩn trên màn hình hẹp (chỉ còn biểu tượng) */
+.action-label {
+  display: inline;
+}
+
+@media (max-width: 768px) {
+  .action-label {
+    display: none;
+  }
+}
