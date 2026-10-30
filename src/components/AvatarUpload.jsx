@@ -93,20 +93,17 @@ function AvatarUpload({ onChange, avatarUrl }) {
         <Tooltip title="Bấm để chọn ảnh">
           <span className="avatar-dropzone">
             <Avatar
-              size={132}
+              size={128}
               src={currentSrc || undefined}
-              icon={<CameraOutlined style={{ fontSize: 34, color: "#94a3b8" }} />}
-              style={{
-                backgroundColor: "#f8fafc",
-                border: "1px dashed #cbd5e1",
-                color: "#94a3b8",
-              }}
+              icon={
+                <CameraOutlined style={{ fontSize: 30, color: "#829681" }} />
+              }
             />
           </span>
         </Tooltip>
       </Upload>
 
-      <div style={{ width: "100%", maxWidth: 180 }}>
+      <div style={{ width: "100%" }}>
         <Upload
           accept="image/*"
           showUploadList={false}
@@ -125,7 +122,7 @@ function AvatarUpload({ onChange, avatarUrl }) {
             size="small"
             icon={<DeleteOutlined />}
             onClick={handleRemove}
-            style={{ marginTop: 6 }}
+            style={{ marginTop: 4 }}
           >
             Xóa ảnh
           </Button>

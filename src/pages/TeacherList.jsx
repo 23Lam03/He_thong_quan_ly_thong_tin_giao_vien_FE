@@ -1,24 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   App as AntApp,
-  Avatar,
   Button,
-  Card,
   Drawer,
+  Empty,
   Form,
   Grid,
   Input,
-  Space,
   Table,
-  Tag,
   Tooltip,
-  Typography,
 } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
+  PhoneOutlined,
   PlusOutlined,
   ReloadOutlined,
+  SearchOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -31,15 +29,16 @@ import {
   updateTeacher,
 } from "../api";
 import TeacherForm from "../components/TeacherForm";
+import PageHeader from "../components/PageHeader";
 import { DEGREE_TYPES, getDegreeLabel } from "../constants/degreeTypes";
-
-const { Title, Text } = Typography;
 
 function TeacherList() {
   const { message, modal } = AntApp.useApp();
   const [form] = Form.useForm();
   const screens = Grid.useBreakpoint();
   const isMobile = !screens.md;
+  // Drawer rộng cần nhiều không gian hơn: dưới 992px thì chiếm toàn màn hình
+  const isWide = !screens.lg;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({
@@ -54,18 +53,21 @@ function TeacherList() {
   const [positions, setPositions] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
-  const fetchTeachers = useCallback(async (page = 1, limit = 10, search = "") => {
-    setLoading(true);
-    try {
-      const res = await getTeachers({ page, limit, keyword: search || undefined });
-      setData(res.data || []);
-      setPagination(res.pagination || { page, limit, total: 0, totalPages: 0 });
-    } catch (error) {
-      message.error(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [message]);
+  const fetchTeachers = useCallback(
+    async (page = 1, limit = 10, search = "") => {
+      setLoading(true);
+      try {
+        const res = await getTeachers({ page, limit, keyword: search || undefined });
+        setData(res.data || []);
+        setPagination(res.pagination || { page, limit, total: 0, totalPages: 0 });
+      } catch (error) {
+        message.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [message]
+  );
 
   const fetchPositions = useCallback(async () => {
     try {
@@ -202,54 +204,70 @@ function TeacherList() {
       title: "Ảnh",
       dataIndex: "avatar",
       key: "avatar",
-      width: 64,
-      render: (value, record) => (
-        <Avatar
-          size={40}
-          src={getAvatarUrl(value) || undefined}
-          icon={<UserOutlined />}
-          style={{ backgroundColor: "#f0f0f0", color: "#8c8c8c" }}
-        >
-          {record.name?.charAt(0)}
-        </Avatar>
-      ),
+      width: 78,
+      align: "center",
+      className: "cell-avatar-cell",
+      render: (value) => {
+        const url = getAvatarUrl(value);
+        return (
+          <span className="cell-avatar">
+            {url ? (
+              <img src={url} alt="" />
+            ) : (
+              <UserOutlined style={{ color: "#829681" }} />
+            )}
+          </span>
+        );
+      },
     },
     {
-      title: "Mã GV",
+      title: "Mã giáo viên",
       dataIndex: "code",
       key: "code",
-      width: 120,
-      render: (value) => <Text strong>{value}</Text>,
+      width: 138,
+      render: (value) => <span className="cell-code">{value}</span>,
     },
     {
       title: "Họ tên",
       dataIndex: "name",
       key: "name",
-      width: 180,
-      render: (value) => value || "-",
+      width: 200,
+      render: (value) => <span className="cell-name">{value || "-"}</span>,
     },
     {
-      title: "Email",
+      title: "Liên hệ",
       dataIndex: "email",
       key: "email",
-      width: 220,
-      ellipsis: true,
-      render: (value) => value || "-",
-    },
-    {
-      title: "Số điện thoại",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-      width: 140,
-      render: (value) => value || "-",
+      width: 250,
+      render: (value, record) => (
+        <div>
+          <div className="cell-email">{value || "-"}</div>
+          <div className="cell-sub num">
+            {record.phoneNumber ? (
+              <>
+                <PhoneOutlined
+                  style={{ marginRight: 5, fontSize: 10, opacity: 0.7 }}
+                />
+                {record.phoneNumber}
+              </>
+            ) : (
+              "—"
+            )}
+          </div>
+        </div>
+      ),
     },
     {
       title: "Trạng thái",
       dataIndex: "isActive",
       key: "isActive",
-      width: 130,
-      render: (value) =>
-        value ? <Tag color="green">Đang hoạt động</Tag> : <Tag color="red">Ngừng hoạt động</Tag>,
+      width: 148,
+      render: (value) => (
+        <span className={`status-pill ${value ? "is-active" : "is-inactive"}`}>
+          <i className="dot" />
+          {value ? "Đang hoạt động" : "Ngừng hoạt động"}
+        </span>
+      ),
     },
     {
       title: "Vị trí công tác",
@@ -258,49 +276,60 @@ function TeacherList() {
       width: 220,
       render: (list) =>
         list && list.length ? (
-          <Space size={4} wrap>
+          <div className="chip-set">
             {list.map((p) => (
-              <Tag key={p._id} color="blue">
-                {p.name}
-              </Tag>
+              <span className="chip" key={p._id}>
+                <span className="chip-name">{p.name}</span>
+                {p.code && <code className="chip-code">{p.code}</code>}
+              </span>
             ))}
-          </Space>
+          </div>
         ) : (
-          "-"
+          <span className="cell-sub">Chưa phân công</span>
         ),
     },
     {
       title: "Học vấn",
       dataIndex: "degrees",
       key: "degrees",
-      width: 260,
+      width: 290,
       render: (list) =>
         list && list.length ? (
-          <div>
+          <div className="deg-list">
             {list.map((d, index) => (
-              <div className="degree-list-item" key={d._id || index}>
-                <Space size={4} wrap>
-                  <Tag color="purple">{getDegreeLabel(d.type)}</Tag>
-                  <Text ellipsis style={{ maxWidth: 170 }}>
+              <div className="deg-item" key={d._id || index}>
+                <div className="deg-main">
+                  <div className="deg-level">
+                    {getDegreeLabel(d.type)}
+                    <span className="sep">·</span>
+                    <span className="num">{d.year}</span>
+                  </div>
+                  <div className="deg-school" title={d.school}>
                     {d.school}
-                  </Text>
-                </Space>
-                <Text type="secondary" style={{ fontSize: 12 }}>
-                  {d.major} · Năm {d.year} · {d.isGraduated ? "Đã tốt nghiệp" : "Đang học"}
-                </Text>
+                  </div>
+                  <div className="deg-major" title={d.major}>
+                    {d.major}
+                  </div>
+                </div>
+                <span
+                  className={`deg-flag${d.isGraduated ? " is-done" : ""}`}
+                >
+                  {d.isGraduated ? "Đã tốt nghiệp" : "Đang học"}
+                </span>
               </div>
             ))}
           </div>
         ) : (
-          "-"
+          <span className="cell-sub">Chưa cập nhật</span>
         ),
     },
     {
       title: "Thao tác",
       key: "action",
-      width: 130,
+      width: 132,
+      align: "center",
       render: (_, record) => (
-        <Space size={0}>
+        <span className="row-actions">
           <Tooltip title="Cập nhật">
             <Button
               type="link"
@@ -324,91 +353,151 @@ function TeacherList() {
               <span className="action-label">Xóa</span>
             </Button>
           </Tooltip>
-        </Space>
+        </span>
       ),
     },
   ];
 
+  const activeCount = data.filter((t) => t.isActive).length;
+
   return (
     <div>
-      <Card
-        className="app-card"
-        title={
-          <Space size={8} wrap>
-            <Title level={4} style={{ margin: 0 }}>
-              Danh sách giáo viên
-            </Title>
-            <Text type="secondary">Tổng: {pagination.total}</Text>
-          </Space>
-        }
-        extra={
-          <Space wrap size={8}>
-            <Input.Search
-              placeholder="Tìm theo tên, email, số điện thoại"
-              allowClear
-              value={keyword}
-              style={{ width: isMobile ? "100%" : 280 }}
-              onChange={(e) => setKeyword(e.target.value)}
-              onSearch={handleSearch}
-            />
-            <Button icon={<ReloadOutlined />} onClick={handleReset}>
-              Đặt lại
-            </Button>
-            <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenCreate}>
-              Thêm giáo viên
-            </Button>
-          </Space>
-        }
-      >
+      <PageHeader
+        eyebrow="Hồ sơ giáo viên"
+        title="Giáo viên"
+        lede="Tra cứu, cập nhật và quản lý hồ sơ giáo viên bao gồm thông tin cá nhân, vị trí công tác và trình độ học vấn."
+        meta={[
+          { label: "Tổng hồ sơ", value: pagination.total },
+          { label: "Đang hoạt động", value: activeCount },
+          { label: "Vị trí công tác", value: positions.length },
+        ]}
+      />
+
+      <div className="toolbar">
+        <div className="toolbar-search">
+          <Input.Search
+            placeholder="Tìm theo tên, email, số điện thoại"
+            allowClear
+            value={keyword}
+            prefix={<SearchOutlined />}
+            onChange={(e) => setKeyword(e.target.value)}
+            onSearch={handleSearch}
+          />
+        </div>
+
+        <div className="toolbar-actions">
+          <Button icon={<ReloadOutlined />} onClick={handleReset}>
+            Đặt lại
+          </Button>
+          <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenCreate}>
+            Thêm giáo viên
+          </Button>
+        </div>
+      </div>
+
+      <div className="surface">
+        <div className="surface-head">
+          <h3>Danh sách hồ sơ</h3>
+          <span className="rule" />
+          <span className="cell-sub num">
+            {pagination.total > 0
+              ? `Hiển thị ${(pagination.page - 1) * pagination.limit + 1}–${Math.min(
+                  pagination.page * pagination.limit,
+                  pagination.total
+                )} / ${pagination.total}`
+              : "Chưa có dữ liệu"}
+          </span>
+        </div>
+
         <Table
           className="app-table"
           rowKey="_id"
           columns={columns}
           dataSource={data}
           loading={loading}
-          scroll={{ x: 1464 }}
+          scroll={{ x: 1474, y: "100%" }}
           size={isMobile ? "small" : "middle"}
+          locale={{
+            emptyText: (
+              <Empty
+                image={null}
+                description={
+                  <div className="empty-state">
+                    <div className="empty-mark">
+                      <UserOutlined />
+                    </div>
+                    <div className="empty-title">Chưa có giáo viên nào</div>
+                    <div className="empty-text">
+                      {keyword
+                        ? "Không tìm thấy kết quả phù hợp với từ khóa."
+                        : "Bắt đầu bằng việc thêm giáo viên mới vào danh sách."}
+                    </div>
+                  </div>
+                }
+              />
+            ),
+          }}
           pagination={{
             current: pagination.page,
             pageSize: pagination.limit,
             total: pagination.total,
             showSizeChanger: !isMobile,
             pageSizeOptions: ["5", "10", "20", "50"],
-            showTotal: (total, range) => `${range[0]}-${range[1]} / ${total} giáo viên`,
+            showTotal: (total, range) => `${range[0]}–${range[1]} / ${total} giáo viên`,
             responsive: true,
             onChange: (page, limit) => {
               fetchTeachers(page, limit, keyword);
             },
           }}
         />
-      </Card>
+      </div>
 
       <Drawer
         className="app-drawer"
-        title={editing ? "Cập nhật thông tin giáo viên" : "Thêm mới giáo viên"}
-        size={isMobile ? "100%" : 880}
+        title={null}
+        size={isWide ? "100%" : 880}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         destroyOnHidden
-        extra={
-          <Space>
+        footer={
+          <div className="drawer-foot">
             <Button onClick={() => setDrawerOpen(false)}>Hủy</Button>
-            <Button type="primary" loading={submitting} onClick={() => form.submit()}>
+            <Button
+              type="primary"
+              loading={submitting}
+              onClick={() => form.submit()}
+            >
               {editing ? "Cập nhật" : "Tạo mới"}
             </Button>
-          </Space>
+          </div>
         }
       >
-        <TeacherForm
-          form={form}
-          positions={positions}
-          degreeTypes={DEGREE_TYPES}
-          avatarUrl={editing?.avatar || ""}
-          avatarKey={editing?._id || "new"}
-          onFinish={handleSubmit}
-          onPositionsChange={fetchPositions}
-          isCreate={!editing}
-        />
+        <div className="drawer-head">
+          <div className="drawer-eyebrow">
+            {editing ? "Cập nhật hồ sơ" : "Hồ sơ mới"}
+          </div>
+          <div className="drawer-title">
+            {editing ? `Chỉnh sửa thông tin giáo viên` : "Thêm mới giáo viên"}
+          </div>
+          <div className="drawer-sub">
+            {editing
+              ? `Mã giáo viên ${editing.code} · Cập nhật thông tin bên dưới rồi lưu lại.`
+              : "Điền đầy đủ thông tin để tạo hồ sơ giáo viên mới."}
+          </div>
+        </div>
+
+        <div className="drawer-body">
+          <TeacherForm
+            form={form}
+            positions={positions}
+            degreeTypes={DEGREE_TYPES}
+            avatarUrl={editing?.avatar || ""}
+            avatarKey={editing?._id || "new"}
+            onFinish={handleSubmit}
+            onPositionsChange={fetchPositions}
+            isCreate={!editing}
+          />
+        </div>
       </Drawer>
     </div>
   );

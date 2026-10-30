@@ -102,11 +102,16 @@ function PositionNameCodeFields({
           {
             validator: (_, val) => {
               if (!val) return Promise.resolve();
+              const normalized = String(val).trim().toLowerCase();
               const duplicated = list.some(
-                (p) => p.code?.toLowerCase() === String(val).trim().toLowerCase()
+                (p) => p.code?.trim().toLowerCase() === normalized
               );
               return duplicated
-                ? Promise.reject(new Error("Mã vị trí công tác đã tồn tại"))
+                ? Promise.reject(
+                    new Error(
+                      "Mã vị trí này đã được dùng. Vui lòng chọn mã khác."
+                    )
+                  )
                 : Promise.resolve();
             },
           },

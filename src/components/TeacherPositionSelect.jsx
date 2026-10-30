@@ -78,7 +78,20 @@ function TeacherPositionSelect({ value, onChange, positions, onRefresh }) {
         onChange?.([...current, newPosition._id]);
       }
     } catch (error) {
-      message.error(error?.message || "Tạo mới vị trí công tác thất bại");
+      const msg = error?.message || "Tạo mới vị trí công tác thất bại";
+      // Lỗi trùng mã: báo tại đúng trường để người dùng biết cần đổi mã
+      if (/mã vị trí/i.test(msg)) {
+        form.setFields([
+          {
+            name: "code",
+            errors: [
+              "Mã vị trí này đã được dùng (kể cả vị trí đã ẩn). Vui lòng chọn mã khác.",
+            ],
+          },
+        ]);
+        return;
+      }
+      message.error(msg);
     } finally {
       setSubmitting(false);
     }

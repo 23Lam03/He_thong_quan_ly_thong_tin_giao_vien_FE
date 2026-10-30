@@ -1,96 +1,1444 @@
-/* ===== Giao diện dùng chung cho toàn hệ thống ===== */
+/* ============================================================
+   CONTEMPORARY ACADEMIC LUXURY — Design System
+   Hệ thống thiết kế cho Hệ thống quản lý thông tin giáo viên
+   ============================================================ */
 
-/* --- Drawer: tiêu đề gọn, nội dung thoáng --- */
-.app-drawer .ant-drawer-header {
-  border-bottom: 1px solid #eef2f7;
-  padding: 16px 24px;
+/* ---------- 1. Tokens ---------- */
+:root {
+  /* Bảng màu cốt lõi */
+  --forest-900: #101C17;
+  --forest-800: #172820; /* Midnight Forest */
+  --forest-700: #1E3329;
+  --forest-600: #294C3A; /* Deep Evergreen */
+  --forest-500: #3A6350;
+  --forest-400: #4E7A64;
+
+  --sage-500: #6E8474;
+  --sage-400: #829681; /* Sage */
+  --sage-300: #A8B8A6;
+  --sage-200: #C9D3C7;
+  --sage-100: #E5EAE3;
+  --sage-050: #F0F3EE;
+
+  --ivory: #F5F3EC; /* Warm Ivory */
+  --ivory-deep: #EDE9DE;
+  --ivory-soft: #FBFAF6;
+
+  --gold: #B69A68; /* Muted Gold */
+  --gold-soft: #D6C3A0;
+  --gold-wash: #F2ECDE;
+
+  --charcoal: #252A26;
+  --ink: #1B211C;
+  --ink-soft: #414A43;
+  --ink-muted: #6C766E;
+  --ink-faint: #97A099;
+
+  --paper: #FFFFFF;
+
+  --danger: #9E3B32;
+  --danger-wash: #F8EDEB;
+  --warning: #9A6F22;
+  --warning-wash: #F7F0E1;
+
+  /* Đường viền hairline */
+  --line: rgba(23, 40, 32, 0.1);
+  --line-soft: rgba(23, 40, 32, 0.06);
+  --line-strong: rgba(23, 40, 32, 0.18);
+  --line-gold: rgba(182, 154, 104, 0.4);
+
+  /* Typography */
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Nhịp không gian */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Bo góc có chủ đích — không bo tròn mọi thứ */
+  --r-xs: 2px;
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 10px;
+  --r-pill: 999px;
+
+  /* Chuyển động */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 140ms;
+  --dur: 240ms;
+  --dur-slow: 420ms;
+
+  /* Đổ bóng rất nhẹ */
+  --lift-1: 0 1px 2px rgba(16, 28, 23, 0.05);
+  --lift-2: 0 2px 10px rgba(16, 28, 23, 0.07);
+  --lift-3: 0 12px 40px rgba(16, 28, 23, 0.13);
 }
 
-.app-drawer .ant-drawer-title {
+/* ---------- 2. Reset & Base ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv05" 1, "ss01" 1;
+}
+
+/* Số liệu luôn dùng chữ số tabular */
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ---------- 3. App Shell ---------- */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--ivory);
+}
+
+/* --- Sidebar --- */
+.app-sider {
+  width: 268px;
+  flex: 0 0 268px;
+  background: var(--forest-800);
+  color: var(--sage-200);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.app-sider::after {
+  /* vân sáng rất nhẹ ở mép phải */
+  content: "";
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(182, 154, 104, 0.35), transparent);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 26px 24px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  display: grid;
+  place-items: center;
+  background: var(--forest-600);
+  color: var(--gold-soft);
+  border: 1px solid var(--line-gold);
+  border-radius: var(--r-sm);
+  font-family: var(--font-display);
+  font-size: 19px;
   font-weight: 600;
-  color: #0f172a;
+  letter-spacing: 0.02em;
+  position: relative;
 }
 
-.app-drawer .ant-drawer-body {
-  padding: 20px 24px 28px;
+.brand-mark::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(182, 154, 104, 0.28);
+  border-radius: 2px;
 }
 
-/* --- Card: bỏ viền dày, dùng đổ bóng nhẹ --- */
-.app-card.ant-card {
-  border: 1px solid #eef2f7;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-  border-radius: 12px;
+.brand-text {
+  min-width: 0;
 }
 
-.app-card .ant-card-head {
-  border-bottom: 1px solid #eef2f7;
-  padding: 0 20px;
-  min-height: 60px;
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 16.5px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.005em;
+  line-height: 1.25;
 }
 
-.app-card .ant-card-head-title {
-  padding: 16px 0;
+.brand-sub {
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sage-500);
+  margin-top: 3px;
 }
 
-.app-card .ant-card-body {
-  padding: 16px 20px 20px;
+.sider-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 14px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* --- Tiêu đề nhóm trong form --- */
-.form-section-title {
+.nav-group-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sage-500);
+  padding: 0 12px;
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  margin-bottom: 3px;
+  border-radius: var(--r-sm);
+  color: var(--sage-200);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid transparent;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+
+.nav-item .anticon {
+  font-size: 16px;
+  color: var(--sage-400);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.045);
+  color: #fff;
+}
+
+.nav-item:hover .anticon {
+  color: var(--gold-soft);
+}
+
+.nav-item:active {
+  transform: translateX(1px);
+}
+
+.nav-item.is-active {
+  background: var(--forest-600);
+  color: #fff;
+  border-color: rgba(182, 154, 104, 0.28);
+}
+
+.nav-item.is-active .anticon {
+  color: var(--gold-soft);
+}
+
+.nav-item.is-active::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 22px;
+  background: var(--gold);
+  border-radius: 0 2px 2px 0;
+}
+
+.nav-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--sage-500);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1px 8px;
+  border-radius: var(--r-pill);
+}
+
+.nav-item.is-active .nav-count {
+  color: var(--gold-soft);
+  background: rgba(182, 154, 104, 0.16);
+}
+
+/* Ghi chú hệ thống trong sidebar */
+.sider-note {
+  margin-top: auto;
+  padding: 20px 12px 4px;
+}
+
+.sider-note-rule {
+  width: 28px;
+  height: 1px;
+  background: var(--line-gold);
+  margin-bottom: 14px;
+}
+
+.sider-note-title {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--sage-200);
+  margin-bottom: 7px;
+}
+
+.sider-note-body {
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: var(--sage-500);
+  margin-bottom: 14px;
+}
+
+.sider-note-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--sage-500);
+}
+
+.sider-note-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--forest-400);
+  box-shadow: 0 0 0 3px rgba(78, 122, 100, 0.2);
+  flex: 0 0 5px;
+}
+
+/* Khu vực tài khoản */
+.sider-account {
+  padding: 16px 14px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.account-card {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 11px;
+  border-radius: var(--r-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.account-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.account-avatar {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border-radius: var(--r-pill);
+  background: var(--forest-500);
+  color: var(--gold-soft);
+  display: grid;
+  place-items: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.account-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.account-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-role {
+  font-size: 11px;
+  color: var(--sage-500);
+  letter-spacing: 0.04em;
+}
+
+/* --- Khung nội dung --- */
+.app-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-topbar {
+  height: 64px;
+  flex: 0 0 64px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 34px;
+  background: rgba(245, 243, 236, 0.85);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 15;
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-faint);
+  letter-spacing: 0.03em;
+}
+
+.crumbs b {
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.crumbs .sep {
+  color: var(--sage-300);
+}
+
+.app-canvas {
+  flex: 1;
+  padding: 34px 34px 56px;
+  min-width: 0;
+}
+
+/* Giới hạn chiều rộng nội dung trên màn hình rộng — giữ nhịp đọc thoải mái */
+.app-canvas > * {
+  max-width: 1560px;
+  margin-inline: auto;
+}
+
+/* ---------- 4. Page Header (Editorial) ---------- */
+.page-head {
+  margin-bottom: 26px;
+}
+
+.page-eyebrow {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 4px 0 16px;
-  font-size: 15px;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sage-500);
   font-weight: 600;
-  color: #0f172a;
-  white-space: nowrap;
-}
-
-.form-section-title::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, #e2e8f0, rgba(226, 232, 240, 0));
-}
-
-/* --- Lỗi của Form.List --- */
-.form-list-error {
-  color: #ff4d4f;
-  font-size: 13px;
   margin-bottom: 10px;
 }
 
-/* --- Block trình độ học vấn --- */
+.page-eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 34px;
+  line-height: 1.14;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.page-title .accent {
+  color: var(--forest-600);
+  font-style: normal;
+  font-weight: 400;
+}
+
+.page-lede {
+  margin: 11px 0 0;
+  max-width: 62ch;
+  color: var(--ink-muted);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+.page-meta {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.meta-value {
+  font-family: var(--font-display);
+  font-size: 25px;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--forest-600);
+  font-variant-numeric: tabular-nums;
+}
+
+.meta-label {
+  font-size: 10.5px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ---------- 5. Toolbar ---------- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.toolbar-search {
+  position: relative;
+  flex: 1 1 300px;
+  max-width: 420px;
+  min-width: 200px;
+}
+
+.toolbar-search .ant-input-affix-wrapper {
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: var(--paper);
+  height: 40px;
+  padding-inline: 13px;
+  box-shadow: none;
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.toolbar-search .ant-input-affix-wrapper:hover {
+  border-color: var(--line-strong);
+}
+
+.toolbar-search .ant-input-affix-wrapper-focused {
+  border-color: var(--forest-500);
+  box-shadow: 0 0 0 3px rgba(58, 99, 80, 0.1);
+}
+
+.toolbar-search .ant-input-prefix {
+  color: var(--ink-faint);
+  margin-right: 9px;
+}
+
+.toolbar-search .ant-input {
+  font-size: 13.5px;
+  background: transparent;
+}
+
+.toolbar-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toolbar-actions .ant-btn {
+  height: 40px;
+}
+
+/* ---------- 6. Surface (Card) ---------- */
+.surface {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--lift-1);
+  overflow: hidden;
+}
+
+.surface-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 22px;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--ivory-soft);
+}
+
+.surface-head h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: 0.005em;
+}
+
+.surface-head .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ---------- 7. Table ---------- */
+.app-table {
+  background: var(--paper);
+}
+
+.app-table .ant-table {
+  background: var(--paper);
+}
+
+.app-table .ant-table-container {
+  border-inline: none !important;
+}
+
+/* Bảng luôn lấp đầy chiều rộng khung chứa khi đủ chỗ,
+   nhưng vẫn cuộn ngang nếu khung hẹp hơn bảng */
+.app-table .ant-table table {
+  width: 100% !important;
+  min-width: 1474px !important;
+}
+
+/* Header: nhãn viết hoa nhỏ, khoảng cách rộng, canh giữa đồng nhất */
+.app-table .ant-table-thead > tr > th {
+  background: var(--ivory-soft);
+  color: var(--ink-faint);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line) !important;
+  white-space: nowrap;
+  text-align: center !important;
+}
+
+/* Đường kẻ dọc giữa các cột — tinh tế, không nặng nề */
+.app-table .ant-table-thead > tr > th:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 14px;
+  background: var(--line);
+}
+
+.app-table .ant-table-thead > tr > th {
+  position: relative;
+}
+
+.app-table .ant-table-thead > tr > th::before {
+  display: none !important;
+}
+
+.app-table .ant-table-tbody > tr > td {
+  padding: 15px 16px;
+  border-bottom: 1px solid var(--line-soft) !important;
+  background: var(--paper);
+  vertical-align: middle;
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.app-table .ant-table-tbody > tr:last-child > td {
+  border-bottom: none !important;
+}
+
+.app-table .ant-table-tbody > tr.ant-table-row:hover > td {
+  background: var(--sage-050) !important;
+}
+
+.app-table .ant-table-tbody > tr > td.cell-name {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* Cột ảnh đại diện: canh giữa theo header */
+.app-table .ant-table-tbody > tr > td.cell-avatar-cell {
+  text-align: center;
+}
+
+.app-table .ant-table-tbody > tr > td.cell-avatar-cell .cell-avatar {
+  display: inline-grid;
+}
+
+/* ---------- 8. Ô dữ liệu trong bảng ---------- */
+.cell-avatar {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  background: var(--sage-100);
+  color: var(--forest-600);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  border: 1px solid var(--line);
+  flex: 0 0 42px;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.app-table .ant-table-row:hover .cell-avatar {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(182, 154, 104, 0.16);
+}
+
+.cell-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cell-code {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--forest-600);
+  font-variant-numeric: tabular-nums;
+  background: var(--sage-050);
+  border: 1px solid var(--line-soft);
+  padding: 3px 9px;
+  border-radius: var(--r-xs);
+  display: inline-block;
+}
+
+.cell-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+
+.cell-sub {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  margin-top: 2px;
+}
+
+.cell-email {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.cell-phone {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+/* Badge trạng thái tinh tế */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 4px 11px 4px 9px;
+  border-radius: var(--r-pill);
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.status-pill .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: 0 0 6px;
+}
+
+.status-pill.is-active {
+  background: var(--sage-050);
+  color: var(--forest-600);
+  border-color: rgba(58, 99, 80, 0.2);
+}
+
+.status-pill.is-active .dot {
+  background: var(--forest-500);
+  box-shadow: 0 0 0 3px rgba(58, 99, 80, 0.14);
+}
+
+.status-pill.is-inactive {
+  background: var(--danger-wash);
+  color: var(--danger);
+  border-color: rgba(158, 59, 50, 0.18);
+}
+
+.status-pill.is-inactive .dot {
+  background: var(--danger);
+  box-shadow: 0 0 0 3px rgba(158, 59, 50, 0.12);
+}
+
+/* Chip vị trí công tác */
+.chip-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--forest-600);
+  background: var(--sage-050);
+  border: 1px solid var(--line-soft);
+  padding: 2px 9px;
+  border-radius: var(--r-xs);
+  line-height: 1.7;
+}
+
+.chip-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.chip-code {
+  font-size: 9.5px;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  color: var(--sage-500);
+  font-variant-numeric: tabular-nums;
+  padding-left: 6px;
+  border-left: 1px solid var(--line-soft);
+  white-space: nowrap;
+}
+
+.chip.is-gold {
+  background: var(--gold-wash);
+  color: #8A6F3F;
+  border-color: var(--line-gold);
+}
+
+/* Học vấn — bố cục lưới cố định: nội dung bên trái, cờ trạng thái bên phải */
+.deg-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.deg-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.deg-item + .deg-item {
+  border-top: 1px dashed var(--line);
+}
+
+.deg-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.deg-level {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--forest-600);
+  line-height: 1.4;
+}
+
+.deg-level .sep {
+  color: var(--sage-300);
+  letter-spacing: 0;
+}
+
+.deg-school {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deg-major {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deg-flag {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  font-size: 9.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--line);
+  color: var(--ink-muted);
+  background: var(--ivory-soft);
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.deg-flag.is-done {
+  color: var(--forest-600);
+  border-color: rgba(58, 99, 80, 0.22);
+  background: var(--sage-050);
+}
+
+/* Nút hành động trong bảng */
+.row-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.row-actions .ant-btn {
+  height: 30px;
+  padding-inline: 9px;
+  border-radius: var(--r-sm);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.row-actions .ant-btn:hover {
+  background: var(--sage-050);
+  color: var(--forest-600);
+}
+
+.row-actions .ant-btn.ant-btn-dangerous:hover {
+  background: var(--danger-wash);
+  color: var(--danger);
+}
+
+.action-label {
+  display: inline;
+}
+
+/* ---------- 9. Pagination ---------- */
+.app-table .ant-pagination {
+  margin: 18px 22px;
+}
+
+.app-table .ant-pagination .ant-pagination-total-text {
+  margin-inline-end: auto;
+  font-size: 12px;
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+}
+
+.app-table .ant-pagination .ant-pagination-item {
+  border-radius: var(--r-sm);
+  border-color: var(--line);
+  background: var(--paper);
+  min-width: 32px;
+  height: 32px;
+  line-height: 30px;
+  transition: all var(--dur-fast) var(--ease);
+}
+
+.app-table .ant-pagination .ant-pagination-item a {
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.app-table .ant-pagination .ant-pagination-item:hover {
+  border-color: var(--forest-500);
+}
+
+.app-table .ant-pagination .ant-pagination-item:hover a {
+  color: var(--forest-600);
+}
+
+.app-table .ant-pagination .ant-pagination-item-active {
+  background: var(--forest-600);
+  border-color: var(--forest-600);
+}
+
+.app-table .ant-pagination .ant-pagination-item-active a {
+  color: #fff;
+}
+
+.app-table .ant-pagination .ant-pagination-prev,
+.app-table .ant-pagination .ant-pagination-next {
+  border-radius: var(--r-sm);
+  border-color: var(--line);
+}
+
+.app-table .ant-pagination .ant-pagination-prev button,
+.app-table .ant-pagination .ant-pagination-next button {
+  color: var(--ink-soft);
+}
+
+.app-table .ant-pagination .ant-pagination-prev:hover button,
+.app-table .ant-pagination .ant-pagination-next:hover button {
+  color: var(--forest-600);
+}
+
+.app-table .ant-pagination .ant-pagination-options .ant-select-content {
+  border-radius: var(--r-sm);
+  border-color: var(--line);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 10. Drawer ---------- */
+/* Ant Design 6: class `app-drawer` rơi trực tiếp lên `.ant-drawer-section` */
+.app-drawer {
+  background: var(--paper);
+}
+
+.app-drawer .ant-drawer-header {
+  border-bottom: 1px solid var(--line);
+  padding: 0;
+}
+
+.app-drawer .ant-drawer-header-title {
+  align-items: flex-start;
+}
+
+.app-drawer .ant-drawer-title {
+  white-space: normal;
+}
+
+.app-drawer .ant-drawer-body {
+  padding: 0;
+  background: var(--paper);
+}
+
+.app-drawer .ant-drawer-footer {
+  padding: 0;
+  border-top: none;
+  background: var(--paper);
+}
+
+.app-drawer .ant-drawer-close {
+  order: 3;
+  color: var(--ink-faint);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.app-drawer .ant-drawer-close:hover {
+  background: var(--sage-050);
+  color: var(--forest-600);
+}
+
+/* Header Drawer dạng editorial */
+.drawer-head {
+  padding: 24px 30px 20px;
+  border-bottom: 1px solid var(--line);
+  background: var(--ivory-soft);
+}
+
+.drawer-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sage-500);
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.drawer-eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.drawer-title {
+  font-family: var(--font-display);
+  font-size: 23px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.25;
+  letter-spacing: -0.008em;
+}
+
+.drawer-sub {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  margin-top: 6px;
+}
+
+.drawer-body {
+  padding: 26px 30px 34px;
+}
+
+.drawer-foot {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 30px;
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -6px 20px rgba(16, 28, 23, 0.05);
+}
+
+.drawer-foot .hint {
+  margin-right: auto;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* ---------- 11. Form ---------- */
+.form-section {
+  margin-bottom: 34px;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.form-section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--line);
+}
+
+.form-section-index {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold);
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-gold);
+  border-radius: var(--r-xs);
+  background: var(--gold-wash);
+}
+
+.form-section-title {
+  font-family: var(--font-display);
+  font-size: 16.5px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: 0.004em;
+}
+
+.form-section-note {
+  margin-left: auto;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+}
+
+.app-drawer .ant-form-item {
+  margin-bottom: 20px;
+}
+
+.app-drawer .ant-form-item-label > label {
+  font-size: 11px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-muted);
+  height: auto;
+}
+
+.app-drawer .ant-form-item-label > label.ant-form-item-required::before {
+  color: var(--gold);
+  font-size: 11px;
+}
+
+/* Thẻ học vấn: nhãn 1 dòng để các ô nhập luôn thẳng hàng nhau */
+.degree-card .ant-form-item-label > label {
+  white-space: nowrap;
+}
+
+.degree-card .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.app-drawer .ant-input,
+.app-drawer .ant-input-affix-wrapper,
+.app-drawer .ant-picker,
+.app-drawer .ant-select-content,
+.app-drawer .ant-input-number,
+.app-drawer .ant-input-number-input {
+  border-radius: var(--r-sm);
+  border-color: var(--line);
+  background: var(--paper);
+  box-shadow: none;
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.app-drawer .ant-input:hover,
+.app-drawer .ant-input-affix-wrapper:hover,
+.app-drawer .ant-picker:hover,
+.app-drawer .ant-select:hover .ant-select-content,
+.app-drawer .ant-input-number:hover {
+  border-color: var(--line-strong);
+}
+
+.app-drawer .ant-input:focus,
+.app-drawer .ant-input-affix-wrapper-focused,
+.app-drawer .ant-picker-focused,
+.app-drawer .ant-select-focused .ant-select-content,
+.app-drawer .ant-input-number-focused {
+  border-color: var(--forest-500) !important;
+  box-shadow: 0 0 0 3px rgba(58, 99, 80, 0.1) !important;
+}
+
+.app-drawer .ant-input::placeholder,
+.app-drawer .ant-picker-input > input::placeholder {
+  color: var(--ink-faint);
+  font-size: 13px;
+}
+
+.app-drawer .ant-form-item-extra {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  margin-top: 5px;
+}
+
+.app-drawer .ant-form-item-explain-error {
+  font-size: 11.5px;
+  color: var(--danger);
+}
+
+/* Nút */
+.btn-primary,
+.ant-btn-primary {
+  background: var(--forest-600) !important;
+  border-color: var(--forest-600) !important;
+  color: #fff !important;
+  border-radius: var(--r-sm);
+  font-weight: 500;
+  box-shadow: none;
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.btn-primary:hover,
+.ant-btn-primary:hover {
+  background: var(--forest-500) !important;
+  border-color: var(--forest-500) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(41, 76, 58, 0.22);
+}
+
+.btn-primary:active,
+.ant-btn-primary:active {
+  transform: translateY(0);
+}
+
+.ant-btn {
+  border-radius: var(--r-sm);
+  font-weight: 500;
+  box-shadow: none;
+  transition: all var(--dur-fast) var(--ease);
+}
+
+.ant-btn-default {
+  border-color: var(--line);
+  color: var(--ink-soft);
+  background: var(--paper);
+}
+
+.ant-btn-default:hover {
+  border-color: var(--forest-500) !important;
+  color: var(--forest-600) !important;
+  background: var(--sage-050) !important;
+}
+
+/* Switch */
+.app-drawer .ant-switch {
+  background: var(--sage-200);
+  border-radius: var(--r-pill);
+}
+
+.app-drawer .ant-switch.ant-switch-checked {
+  background: var(--forest-600);
+}
+
+.app-drawer .ant-switch.ant-switch-checked:hover {
+  background: var(--forest-500);
+}
+
+/* ---------- 12. Ảnh đại diện ---------- */
+.avatar-panel {
+  padding-bottom: 4px;
+}
+
+.avatar-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar-dropzone {
+  display: inline-flex;
+  border-radius: var(--r-pill);
+  position: relative;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.avatar-dropzone::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: var(--r-pill);
+  border: 1px dashed var(--line-strong);
+  transition: border-color var(--dur) var(--ease);
+  pointer-events: none;
+}
+
+.avatar-dropzone:hover {
+  transform: scale(1.03);
+}
+
+.avatar-dropzone:hover::after {
+  border-color: var(--gold);
+}
+
+.avatar-upload .ant-avatar {
+  background: var(--sage-050);
+  border: 1px solid var(--line);
+  color: var(--sage-500);
+}
+
+.avatar-hint {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.avatar-block {
+  background: var(--ivory-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 22px 18px;
+  text-align: center;
+}
+
+.avatar-block-title {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 3px;
+}
+
+.avatar-block-sub {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  margin: 0 0 16px;
+}
+
+/* ---------- 13. Trình độ học vấn ---------- */
 .degree-card {
-  border: 1px solid #e6ebf2;
-  border-radius: 10px;
-  background: #fbfcfe;
-  padding: 14px 16px 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--ivory-soft);
+  padding: 14px 18px 0;
   margin-bottom: 12px;
+  position: relative;
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.degree-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--lift-1);
 }
 
 .degree-card-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 10px;
   margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+/* Số thứ tự dạng huy hiệu tròn, dẫn nhắm thị giác */
+.degree-card-index {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  border-radius: var(--r-pill);
+  background: var(--forest-600);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .degree-card-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 13.5px;
   font-weight: 600;
-  font-size: 13px;
-  color: #1e293b;
-  background: #eef2ff;
-  border: 1px solid #dbe3ff;
-  border-radius: 999px;
-  padding: 2px 12px;
+  color: var(--forest-600);
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
@@ -98,136 +1446,473 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-left: auto;
   flex-wrap: wrap;
 }
 
-/* --- Dòng nhãn + switch --- */
+.degree-card-tools .ant-btn {
+  font-size: 12px;
+}
+
 .inline-field {
   display: flex;
   align-items: center;
   gap: 8px;
   white-space: nowrap;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-xs);
+  padding: 3px 10px 3px 12px;
 }
 
-/* --- Avatar --- */
-.avatar-panel {
-  position: sticky;
-  top: 0;
-  padding: 8px 0 24px;
+.inline-field .ant-typography {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
 }
 
-@media (max-width: 992px) {
-  .avatar-panel {
-    position: static;
-    padding: 0 0 16px;
-  }
+.form-list-error {
+  color: var(--danger);
+  font-size: 12px;
+  margin-bottom: 12px;
+  padding: 9px 13px;
+  background: var(--danger-wash);
+  border: 1px solid rgba(158, 59, 50, 0.16);
+  border-radius: var(--r-sm);
 }
 
-.avatar-upload {
+/* ---------- 14. Vị trí công tác (dạng bảng editorial) ---------- */
+.pos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 22px;
+}
+
+.pos-card {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 20px 20px 16px;
   display: flex;
   flex-direction: column;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
+    transform var(--dur) var(--ease-out);
+}
+
+.pos-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 2px;
+  background: var(--gold);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.pos-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--lift-2);
+  transform: translateY(-2px);
+}
+
+.pos-card:hover::before {
+  opacity: 1;
+}
+
+.pos-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pos-seal {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: var(--r-sm);
+  background: var(--forest-600);
+  color: var(--gold-soft);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.pos-code {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--sage-500);
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+
+.pos-name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 2px 0 0;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+
+.pos-des {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  line-height: 1.65;
+  margin: 0 0 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 41px;
+}
+
+.pos-foot {
+  margin-top: auto;
+  padding-top: 13px;
+  border-top: 1px solid var(--line-soft);
+  display: flex;
   align-items: center;
+  gap: 6px;
+}
+
+.pos-foot .row-actions {
+  margin-left: auto;
+}
+
+.pos-empty {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+/* ---------- 15. Modal ---------- */
+/* Ant Design 6: khối nội dung mang class `.ant-modal-container` */
+.ant-modal-container {
+  border-radius: var(--r-lg) !important;
+  border: 1px solid var(--line);
+  box-shadow: var(--lift-3);
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.ant-modal-header {
+  margin-bottom: 0 !important;
+  padding: 22px 26px 18px !important;
+  background: var(--ivory-soft);
+  border-bottom: 1px solid var(--line);
+}
+
+.ant-modal-title {
+  font-family: var(--font-display) !important;
+  font-size: 19px !important;
+  font-weight: 600 !important;
+  color: var(--ink) !important;
+  letter-spacing: -0.005em;
+}
+
+.ant-modal-body {
+  padding: 24px 26px !important;
+}
+
+.ant-modal-footer {
+  margin-top: 0 !important;
+  padding: 16px 26px !important;
+  border-top: 1px solid var(--line);
+  background: var(--ivory-soft);
+}
+
+.ant-modal-close {
+  color: var(--ink-faint);
+}
+
+.ant-modal-close:hover {
+  background: var(--sage-050);
+  color: var(--forest-600);
+}
+
+/* ---------- 16. Confirm dialog ---------- */
+.ant-modal-confirm .ant-modal-confirm-title {
+  font-family: var(--font-display) !important;
+  font-size: 19px !important;
+  font-weight: 600 !important;
+  color: var(--ink) !important;
+}
+
+.ant-modal-confirm .ant-modal-confirm-content {
+  color: var(--ink-muted) !important;
+  font-size: 13.5px !important;
+  line-height: 1.65;
+}
+
+.ant-modal-confirm .ant-modal-confirm-btns {
   gap: 10px;
 }
 
-.avatar-dropzone {
-  position: relative;
-  cursor: pointer;
-  border-radius: 50%;
-  display: inline-flex;
-  transition: transform 0.15s ease;
+.ant-modal-confirm .ant-btn-primary {
+  background: var(--forest-600) !important;
+  border-color: var(--forest-600) !important;
 }
 
-.avatar-dropzone:hover {
-  transform: scale(1.02);
+.ant-modal-confirm .ant-btn-primary.ant-btn-dangerous {
+  background: var(--danger) !important;
+  border-color: var(--danger) !important;
 }
 
-.avatar-hint {
+.ant-modal-confirm .ant-btn-primary.ant-btn-dangerous:hover {
+  background: #86302a !important;
+  border-color: #86302a !important;
+}
+
+/* ---------- 17. Message / Toast ---------- */
+.ant-message-notice-content {
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  box-shadow: var(--lift-2);
+  font-size: 13px;
+  padding: 10px 16px;
+  background: var(--paper);
+}
+
+/* ---------- 18. Select dropdown ---------- */
+.ant-select-dropdown {
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  box-shadow: var(--lift-3);
+  overflow: hidden;
+  padding: 5px;
+}
+
+.ant-select-dropdown .ant-select-item-option-content,
+.ant-select-dropdown .ant-select-item {
+  border-radius: var(--r-xs);
+  font-size: 13px;
+  min-height: 32px;
+  padding-inline: 10px;
+}
+
+.ant-select-dropdown .ant-select-item-option-selected {
+  background: var(--sage-050);
+  color: var(--forest-600);
+  font-weight: 500;
+}
+
+.ant-select-dropdown .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  background: var(--sage-050);
+}
+
+/* ---------- 19. Tooltip ---------- */
+.ant-tooltip .ant-tooltip-inner {
+  background: var(--forest-800);
   font-size: 12px;
-  color: #94a3b8;
+  border-radius: var(--r-sm);
+  padding: 6px 10px;
+  box-shadow: var(--lift-2);
+  max-width: 260px;
+}
+
+/* ---------- 20. Empty & Loading ---------- */
+.empty-state {
+  padding: 56px 20px;
   text-align: center;
-  line-height: 1.5;
+}
+
+.empty-mark {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 16px;
+  border-radius: var(--r-pill);
+  background: var(--sage-050);
+  border: 1px solid var(--line);
+  color: var(--sage-400);
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+}
+
+.empty-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+
+.empty-text {
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+.app-table .ant-table-placeholder .ant-table-cell {
+  border-bottom: none !important;
+}
+
+.app-table .ant-spin-dot-item {
+  background: var(--forest-500);
+}
+
+/* ---------- 21. Motion ---------- */
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-head,
+.surface,
+.pos-grid {
+  animation: riseIn var(--dur-slow) var(--ease-out) both;
+}
+
+.surface {
+  animation-delay: 60ms;
+}
+
+.pos-grid {
+  animation-delay: 100ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- 22. Responsive ---------- */
+@media (max-width: 1200px) {
+  .app-canvas {
+    padding: 28px 24px 48px;
+  }
+
+  .app-topbar {
+    padding: 0 24px;
+  }
 }
 
 @media (max-width: 992px) {
-  /* Mobile: ảnh và nút nằm cạnh nhau để tiết kiệm chiều cao */
-  .avatar-upload {
-    flex-direction: row;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
+  .app-sider {
+    display: none;
   }
 
-  .avatar-upload > div:last-child {
-    flex: 1;
-    min-width: 140px;
+  .app-topbar {
+    height: 58px;
+    flex: 0 0 58px;
+    padding: 0 16px;
+  }
+
+  .app-canvas {
+    padding: 22px 16px 40px;
+  }
+
+  .page-title {
+    font-size: 27px;
+  }
+
+  .page-lede {
+    font-size: 13px;
+  }
+
+  .page-meta {
+    gap: 20px;
+  }
+
+  .meta-value {
+    font-size: 21px;
   }
 }
 
-/* --- Bảng: cột học vấn --- */
-.degree-list-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 4px 0;
-}
-
-.degree-list-item + .degree-list-item {
-  border-top: 1px dashed #eef2f7;
-  margin-top: 4px;
-  padding-top: 8px;
-}
-
-/* --- Bảng: cột cố định (Ảnh / Thao tác) phải nền đồng nhất với dòng ---
-   Ant Design đặt rule nền cho `.ant-table-cell-fix` (nền trắng) SAU rule
-   `row-hover`, nên các ô cột fixed luôn đè nền trắng lên dòng đang rê chuột,
-   tạo cảm giác bị lồng giao diện. Phải nhắm đúng class row-hover. */
-.app-table .ant-table-tbody > tr > td.ant-table-cell-fix-start,
-.app-table .ant-table-tbody > tr > td.ant-table-cell-fix-end {
-  background: #ffffff;
-}
-
-.app-table .ant-table-tbody > tr > td.ant-table-cell-row-hover.ant-table-cell-fix-start,
-.app-table .ant-table-tbody > tr > td.ant-table-cell-row-hover.ant-table-cell-fix-end {
-  background: var(--ant-table-row-hover-bg, #f6f9ff);
-}
-
-.app-table .ant-table-tbody > tr.ant-table-row-selected > td.ant-table-cell-fix-start,
-.app-table .ant-table-tbody > tr.ant-table-row-selected > td.ant-table-cell-fix-end {
-  background: var(--ant-table-row-selected-bg, #e6f4ff);
-}
-
-/* --- Responsive: thu gọn khoảng cách trên màn hình nhỏ --- */
 @media (max-width: 768px) {
-  .app-drawer .ant-drawer-body {
-    padding: 16px 16px 24px;
+  .toolbar-search {
+    max-width: none;
+    flex: 1 1 100%;
   }
 
-  .app-card .ant-card-body {
-    padding: 12px 12px 16px;
+  .toolbar-actions {
+    margin-left: 0;
+    width: 100%;
   }
 
-  .app-card .ant-card-head {
-    padding: 0 12px;
+  .toolbar-actions .ant-btn {
+    flex: 1;
   }
 
-  .form-section-title {
-    font-size: 14px;
-    margin-bottom: 12px;
+  .drawer-head {
+    padding: 20px 20px 16px;
+  }
+
+  .drawer-body {
+    padding: 20px 18px 28px;
+  }
+
+  .drawer-foot {
+    padding: 13px 18px;
+  }
+
+  .drawer-foot .hint {
+    display: none;
+  }
+
+  .drawer-title {
+    font-size: 19px;
+  }
+
+  .pos-grid {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .app-table .ant-pagination {
+    margin: 14px 16px;
+  }
+
+  .app-table .ant-pagination .ant-pagination-total-text {
+    display: none;
+  }
+
+  .page-head {
+    margin-bottom: 20px;
   }
 
   .degree-card {
-    padding: 12px 12px 0;
+    padding: 14px 14px 0;
+  }
+
+  .degree-card-tools {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
   }
 }
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 23px;
+  }
 
-/* Nhãn nút hành động: hiện trên desktop, ẩn trên màn hình hẹp (chỉ còn biểu tượng) */
-.action-label {
-  display: inline;
-}
+  .meta-value {
+    font-size: 19px;
+  }
 
-@media (max-width: 768px) {
-  .action-label {
-    display: none;
+  .app-canvas {
+    padding: 18px 12px 32px;
   }
 }
